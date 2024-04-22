@@ -57,6 +57,33 @@
         packages.default = jupyterlab;
         apps.default.program = "${jupyterlab}/bin/jupyter-lab";
         apps.default.type = "app";
+
+        devShells.default = pkgs.mkShell {
+          buildInputs = with pkgs; [
+            python311
+          ] ++ (with pkgs.python311Packages; [
+            flask
+            python-lsp-server
+            pylint
+            pyflakes
+            pycodestyle
+            pydocstyle
+            
+            (torch.override {
+              # rocmSupport = true;
+              # cudaSupport = true;
+            })
+            faiss
+            datasets
+            torchvision
+            transformers
+            pandas
+            pillow
+            requests
+            numpy
+            scikit-learn
+          ]);
+        };
       }
     );
 }
