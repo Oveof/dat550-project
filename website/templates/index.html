@@ -14,52 +14,172 @@
 
 <main>
     <style>
-        body {
-            font-family: 'Courier New', Courier, monospace;
+    body {
+        font-family: 'Courier New', Courier, monospace;
+    }
+    body, main {
+        max-height: 100vh;
+        width: 100vw;
+        paddin:0 !important;
+        margin:0 !important;
+    }
+    header *{
+        paddin:0;
+        margin:0;
+    }
+
+    .recommendation {
+        padding: 5px;
+        margin:15px;
+        height:auto;
+        overflow:hidden;
+
+        border-radius: 19px 19px 19px 19px;
+        -webkit-border-radius: 19px 19px 19px 19px;
+        -moz-border-radius: 19px 19px 19px 19px;
+        background: #1c2329;
+        border: 2px solid #007eca;
+    }
+
+    .recommendation img {
+
+    }
+
+    .stats {
+        margin:5px;
+        padding:0px;
+    }
+
+    #replace_me {
+        overflow-y:scroll;
+        max-height:90vh;
+        height:90vh;
+        width:100vw;
+    }
+    .responses {
+        width:100%;
+        display: flex;
+        justify_content: space-around;
+    }
+    .prompt {
+        display: block;
+        height: 100px;
+        border-radius: 19px 19px 19px 19px;
+        -webkit-border-radius: 19px 19px 19px 19px;
+        -moz-border-radius: 19px 19px 19px 19px;
+        background: #1c2928;
+        border: 2px solid #00ca9e;
+        padding:10px;
+        margin-top:30px;
+        margin-left:15px;
+        margin-right:15px;
+    }
+
+    .prompt h3 {
+        height: 20%;
+        paddin:0;
+        margin:0;
+    }
+
+    .content {
+        height: 80%;
+        display: flex;
+        justify-content: space-between; 
+        align-items: top; 
+    }
+
+    .content > div {
+        width: 65%;
+        order: 1; 
+    }
+
+    .content > img {
+        width: auto;
+        height: 100%;
+        order: 2;
+    }
+
+    #form {
+        width:100vw;
+        max-height:10vh
+    }
+    img {
+        max-height: 100%;
+        width: auto;
+        max-width: 100%;
+        border-radius: 19px 19px 19px 19px;
+        -webkit-border-radius: 19px 19px 19px 19px;
+        -moz-border-radius: 19px 19px 19px 19px;
+    }
+
+
+
+    #form {
+        width: 50%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #form #input_text {
+        width: calc(100% - 120px - 60px);
+    }
+
+    #form input[type='file'] {
+        color: rgba(0, 0, 0, 0);
+        width: 70px;
+    }
+
+    #form button {
+        width:60px;
+    }
+
+
+    @media (max-width: 1200px) {
+        header {
+            font-size:60%;
         }
-	body, main {
-		max-height: 100vh;
-		width: 100vw;
-	}
-	* {
-		paddin:0 !important;
-		margin:0 !important;
-	}
-	#replace_me {
-		overflow-y:scroll;
-		max-height:90vh;
-		height:90vh;
-		width:100vw;
-		display: flex;
-		justify_content: space-around;
-	}
-	#form {
-		width:100vw;
-		max-height:10vh
-	}
-	img {
-		max-height: 50%;
-		height: auto;
-		width: 90%;
-	}
-	.recommendation {
-		border: 1px black
-	}
+
+        #replace_me, .responses, .prompt, .content, .recommendation, .stats {
+          width: auto; 
+        }
+      
+        .responses {
+          flex-direction: column;
+        }
+      
+        .content {
+          flex-direction: column-reverse; 
+        }
+      
+        .content > div, .content > img {
+          width: 100%;
+        }
+      
+        .content > img {
+          height: auto;
+        }
+      
+        #form {
+          width: auto;
+          margin: 10px; 
+        }
+      
 
 
-      </style>
+        
+      }
 
-      <div id="replace_me"></div>
+    </style>
 
-      <div id="form">
+    <div id="replace_me"></div>
+
+    <div id="form">
       <form onsubmit="send_request(event)">
+        <input type="file" accept="image/*" id='input_image' />
         <input type="text" id='input_text' />
-        <input type="file" id='input_image' />
-
-
         <button type="submit">Submit</button>
       </form>
-	</div>
+    </div>
 
 
 </main>
@@ -69,14 +189,32 @@
         event.preventDefault()
         let formData = new FormData();
 
-        // Append the text and file to the FormData object
-        formData.append('text', document.getElementById("input_text").value);  // Assuming you have an input element with id 'input_text'
-        formData.append('image', document.getElementById("input_image").files[0]);
-    
-        // Use fetch to send the request
-        fetch('/search', { 
+        let text = document.getElementById("input_text").value
+        let file = document.getElementById("input_image").files[0]
+
+        // Reset values
+        document.getElementById("input_text").value=""
+        document.getElementById("input_image").value=''
+
+        formData.append('text', text);
+        formData.append('image', file);
+
+        if (file) {
+            let reader = new FileReader();
+
+            reader.onload = function(e) {
+                let imageUrl = e.target.result;
+                add_to_scrolling_text(render_prompt(text,imageUrl))
+            };
+
+            reader.readAsDataURL(file);
+        } else {
+            add_to_scrolling_text(render_prompt(text,""))
+        }
+
+        fetch('/search', {
             method: "POST",
-            body: formData  // Send the FormData object as the body, headers are automatically set
+            body: formData
         })
         .then(response => {
             if (!response.ok) {
@@ -87,14 +225,42 @@
         .then(html => {
             console.log("I RAN")
             console.log(html)
-            document.getElementById("replace_me").innerHTML = html
+            add_to_scrolling_text(html)
+            setTimeout(() => animateScrollToBottom(), 50);
         })
         .catch(error => {
             console.error('There has been a problem with your fetch operation:', error);
         });
     }
-    function render_prompt(txt) {
-	
+
+    function add_to_scrolling_text(html){
+        document.getElementById("replace_me").innerHTML = document.getElementById("replace_me").innerHTML+ html
+    }
+    function animateScrollToBottom() {
+        const container = document.getElementById("replace_me");
+        const scrollHeight = container.scrollHeight;
+        const stepSize = 50; 
+
+        let interval = setInterval(() => {
+            if (container.scrollTop < scrollHeight - container.clientHeight) {
+                container.scrollTop += stepSize;
+            } else {
+                clearInterval(interval);
+            }
+        }, 10); // Adjust this value to make the animation faster or slower
+    }
+    function render_prompt(text,b64img) {
+        return `
+        <div class="prompt">
+            <h3>Propmt:</h3>
+            <div class="content">
+                <div>
+                    <p>${text}</p>
+                </div>
+                <img src="${b64img}">
+            </div>
+        </div>
+            `
     }
 
 </script>

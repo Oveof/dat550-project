@@ -35,15 +35,13 @@ def bind_socket():
 def render_suggestion(imageb64,text,image_score,text_score,total_score):
     return f"""
     <div class="recommendation">
-        <!--<h3> Recommendations: </h3>-->
         <h3> Reccomendended image: </h3>
         <image src={imageb64} >
         <h3> Reccomendended Text: </h3>
         <p>{text}</p>
-
-        <h4> Score image likeness: {image_score} </h4>
-        <h4> Score text likeness: {text_score} </h4>
-        <h4> Sotal score: {total_score} </h4>
+        <p class="stats"> Image score: {image_score} </p>
+        <p class="stats"> Text score: {text_score} </p>
+        <p class="stats"> Full score: {total_score} </p>
     </div>
     """
 
@@ -62,16 +60,19 @@ def get_suggestions(image,text,title):
 
 @app.route('/search', methods=['POST'])
 def handle_upload():
-    input_text = request.form['text']  # Access text data
-    input_image = request.files['image']  # Access the file
+    if 'text' in request.files:
+        input_text = request.form['text']  # Filter out no alphabetical characters
+        print(input_text)
 
-    print(input_text)
-    print(input_image)
+    if 'image' in request.files:
+        input_image = request.files['image']  # Access the file
+        print(input_image)
 
-    html = ""
+
+    html = "<div class='responses'>"
     for suggestion in range(5):
        html+= render_suggestion(imageb64=testimage ,text="shalabais", image_score="0.5", text_score="0.6", total_score="0.55")
-
+    html+="</div>"
     return html
 
 
@@ -82,8 +83,5 @@ def index():
 if __name__ == "__main__":
     app.run(host='127.0.0.1', port=my_port,debug=False)
 
-
-
-
-
-
+## To get auto reload use:
+# flask --app main.py --debug run
