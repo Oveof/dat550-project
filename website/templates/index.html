@@ -9,7 +9,7 @@
 <body>
 
 <header>
-    <h1>Reccomendation thingy</h1>
+    <h1>Recommendation thingy</h1>
 </header>
 
 <main>
@@ -17,21 +17,50 @@
         body {
             font-family: 'Courier New', Courier, monospace;
         }
+	body, main {
+		max-height: 100vh;
+		width: 100vw;
+	}
+	* {
+		paddin:0 !important;
+		margin:0 !important;
+	}
+	#replace_me {
+		overflow-y:scroll;
+		max-height:90vh;
+		height:90vh;
+		width:100vw;
+		display: flex;
+		justify_content: space-around;
+	}
+	#form {
+		width:100vw;
+		max-height:10vh
+	}
+	img {
+		max-height: 50%;
+		height: auto;
+		width: 90%;
+	}
+	.recommendation {
+		border: 1px black
+	}
 
 
       </style>
 
+      <div id="replace_me"></div>
+
+      <div id="form">
       <form onsubmit="send_request(event)">
         <input type="text" id='input_text' />
         <input type="file" id='input_image' />
 
+
         <button type="submit">Submit</button>
       </form>
+	</div>
 
-
-      <div id="replace_me">
-
-      </div>
 
 </main>
 
@@ -64,8 +93,13 @@
             console.error('There has been a problem with your fetch operation:', error);
         });
     }
+    function render_prompt(txt) {
+	
+    }
 
 </script>
 
 </body>
 </html>
+
+

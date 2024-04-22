@@ -34,16 +34,16 @@ def bind_socket():
 
 def render_suggestion(imageb64,text,image_score,text_score,total_score):
     return f"""
-    <div>
-        <h3> Reccomendations: </h3>
-        <h4> Score image likeness: {image_score} </h4>
-        <h4> Score text likeness: {text_score} </h4>
-        <h4> Sotal score: {total_score} </h4>
-
+    <div class="recommendation">
+        <!--<h3> Recommendations: </h3>-->
         <h3> Reccomendended image: </h3>
         <image src={imageb64} >
         <h3> Reccomendended Text: </h3>
         <p>{text}</p>
+
+        <h4> Score image likeness: {image_score} </h4>
+        <h4> Score text likeness: {text_score} </h4>
+        <h4> Sotal score: {total_score} </h4>
     </div>
     """
 
