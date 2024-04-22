@@ -227,7 +227,7 @@
         function animateScrollToBottom() {
             const container = document.getElementById("replace_me");
             const scrollHeight = container.scrollHeight;
-            const stepSize = 50;
+            const stepSize = 20;
 
             let interval = setInterval(() => {
                 if (container.scrollTop < scrollHeight - container.clientHeight) {
@@ -235,7 +235,7 @@
                 } else {
                     clearInterval(interval);
                 }
-            }, 10); // Adjust this value to make the animation faster or slower
+            }, 3); // Adjust this value to make the animation faster or slower
         }
         function render_prompt(text,b64img) {
             return `
