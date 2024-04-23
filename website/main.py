@@ -121,8 +121,8 @@ def index():
     return render_template('index.html')
 
 if __name__ == "__main__":
-    app.run(host='127.0.0.1', port=my_port,debug=False)
-    # serve(app, host='0.0.0.0', port=8000) # Production run
+    # app.run(host='127.0.0.1', port=my_port,debug=False)
+    serve(app, host='0.0.0.0', port=8000) # Production run
 
 ## To get auto reload use:
 # flask --app main.py --debug run
