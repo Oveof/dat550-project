@@ -3,5 +3,6 @@
 services:
   reccomendation_ai:
     build: .
+    restart: unless-stopped
     ports:
       - 127.0.0.1:8000:8070
