@@ -49,7 +49,7 @@ def render_suggestion(imageb64, text, score):
         <image src="data:image/jpeg;base64,{imageb64}"/>
         <h3> Reccomendended Text: </h3>
         <p>{text}</p>
-        <p class="stats"> Score: {score} </p>
+        <p class="stats"> Score: {score:.2f} </p>
     </div>
     """
 
