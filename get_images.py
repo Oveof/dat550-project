@@ -7,8 +7,6 @@ with open("./data/28k_apparel_data.csv") as f:
         if header:
             header = False
             continue
-        if int(line[0]) < 22316:
-            continue
         url = line[4]
         id = line[0]
         print(line)
