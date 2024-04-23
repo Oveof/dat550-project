@@ -6,6 +6,7 @@ from flask import Flask, request, jsonify , render_template
 import socket
 import http.client
 import json
+from waitress import serve
 
 
 
@@ -32,16 +33,14 @@ def bind_socket():
     s.close()
     return port
 
-def render_suggestion(imageb64,text,image_score,text_score,total_score):
+def render_suggestion(imageb64,text,total_score):
     return f"""
     <div class="recommendation">
         <h3> Reccomendended image: </h3>
         <image src={imageb64} >
         <h3> Reccomendended Text: </h3>
         <p>{text}</p>
-        <p class="stats"> Image score: {image_score} </p>
-        <p class="stats"> Text score: {text_score} </p>
-        <p class="stats"> Full score: {total_score} </p>
+        <p class="stats"> Score: {total_score} </p>
     </div>
     """
 
@@ -71,7 +70,7 @@ def handle_upload():
 
     html = "<div class='responses'>"
     for suggestion in range(5):
-       html+= render_suggestion(imageb64=testimage ,text="shalabais", image_score="0.5", text_score="0.6", total_score="0.55")
+       html+= render_suggestion(imageb64=testimage ,text="shalabais", total_score="0.55")
     html+="</div>"
     return html
 
@@ -81,7 +80,8 @@ def index():
     return render_template('index.html')
 
 if __name__ == "__main__":
-    app.run(host='127.0.0.1', port=my_port,debug=False)
+    # app.run(host='127.0.0.1', port=my_port,debug=False)
+    serve(app, host='0.0.0.0', port=8080)
 
 ## To get auto reload use:
 # flask --app main.py --debug run
