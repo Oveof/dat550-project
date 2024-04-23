@@ -235,7 +235,10 @@
                 console.log("I RAN")
                 console.log(html)
                 add_to_scrolling_text(html)
-                animateScrollToBottom();
+                setTimeout(() => {
+                    const element = document.getElementById("replace_me");
+                    element.scrollTop = element.scrollHeight;
+                }, 50);
             })
             .catch(error => {
                 console.error('There has been a problem with your fetch operation:', error);
@@ -245,23 +248,10 @@
         function add_to_scrolling_text(html){
             document.getElementById("replace_me").innerHTML = document.getElementById("replace_me").innerHTML+ html
         }
-        function animateScrollToBottom() {
-            const container = document.getElementById("replace_me");
-            const scrollHeight = container.scrollHeight;
-            const stepSize = 20;
-
-            let interval = setInterval(() => {
-                if (container.scrollTop < scrollHeight - container.clientHeight) {
-                    container.scrollTop += stepSize;
-                } else {
-                    clearInterval(interval);
-                }
-            }, 20); // Adjust this value to make the animation faster or slower
-        }
         function render_prompt(text,b64img) {
             return `
             <div class="prompt">
-                <h3>Prompt:</h3>
+                <h3>:</h3>
                 <div class="content">
                     <div>
                         <p>${text}</p>
