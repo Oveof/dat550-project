@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blockchain Network</title>
+    <title>CLIP Suggestions</title>
     <link rel="stylesheet" href="https://unpkg.com/pico.css"/>
 </head>
 <body>
 
     <header>
-        <h1>Recommendation thingy</h1>
+        <h1>CLIP Suggestions</h1>
     </header>
 
     <main>
@@ -33,8 +33,12 @@
             .recommendation {
                 padding: 5px;
                 margin:15px;
-                height:auto;
+                height:400px;
                 overflow:hidden;
+
+                display: flex;
+                flex-direction: column;
+                align-items: center;
 
                 border-radius: 19px 19px 19px 19px;
                 -webkit-border-radius: 19px 19px 19px 19px;
@@ -50,8 +54,8 @@
 
             #replace_me {
                 overflow-y:scroll;
-                max-height:90vh;
-                height:90vh;
+                max-height:88vh;
+                height:88vh;
                 width:100vw;
             }
             .responses {
@@ -92,7 +96,7 @@
             }
 
             .content > img {
-                width: auto;
+                max-width: 300px;
                 height: 100%;
                 order: 2;
             }
@@ -107,9 +111,8 @@
 
             }
             img {
-                max-height: 100%;
+                height: 200px;
                 width: auto;
-                max-width: 100%;
                 border-radius: 19px 19px 19px 19px;
                 -webkit-border-radius: 19px 19px 19px 19px;
                 -moz-border-radius: 19px 19px 19px 19px;
@@ -143,6 +146,12 @@
                     width: auto;
                 }
 
+                #replace_me {
+                    overflow-y:scroll;
+                    height:80vh;
+                    width:100vw;
+                }
+
                 .responses {
                     flex-direction: column;
                 }
@@ -151,12 +160,17 @@
                     flex-direction: column-reverse;
                 }
 
-                .content > div, .content > img {
+                .content > div {
                     width: 100%;
                 }
 
-                .content > img {
+                .prompt {
                     height: auto;
+                }
+
+                .content > img {
+                    max-height: 100%;
+                    max-width: 150px;
                 }
 
                 #form {
@@ -221,7 +235,10 @@
                 console.log("I RAN")
                 console.log(html)
                 add_to_scrolling_text(html)
-                setTimeout(() => animateScrollToBottom(), 50);
+                setTimeout(() => {
+                    const element = document.getElementById("replace_me");
+                    element.scrollTop = element.scrollHeight;
+                }, 50);
             })
             .catch(error => {
                 console.error('There has been a problem with your fetch operation:', error);
@@ -231,23 +248,10 @@
         function add_to_scrolling_text(html){
             document.getElementById("replace_me").innerHTML = document.getElementById("replace_me").innerHTML+ html
         }
-        function animateScrollToBottom() {
-            const container = document.getElementById("replace_me");
-            const scrollHeight = container.scrollHeight;
-            const stepSize = 20;
-
-            let interval = setInterval(() => {
-                if (container.scrollTop < scrollHeight - container.clientHeight) {
-                    container.scrollTop += stepSize;
-                } else {
-                    clearInterval(interval);
-                }
-            }, 3); // Adjust this value to make the animation faster or slower
-        }
         function render_prompt(text,b64img) {
             return `
             <div class="prompt">
-                <h3>Propmt:</h3>
+                <h3>:</h3>
                 <div class="content">
                     <div>
                         <p>${text}</p>
