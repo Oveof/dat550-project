@@ -73,6 +73,7 @@
               # rocmSupport = true;
               # cudaSupport = true;
             })
+            waitress
             faiss
             datasets
             torchvision
