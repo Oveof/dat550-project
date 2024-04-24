@@ -78,7 +78,7 @@ def get_suggestions(image = None, text = None):
         query = output
 
     query = query.detach().numpy()
-    
+
     faiss.normalize_L2(query)
 
     k = 5
@@ -95,7 +95,7 @@ def get_suggestions(image = None, text = None):
 def handle_upload():
     input_text = None
     input_image = None
-    
+
     if 'text' in request.form:
         input_text = request.form['text']  # Filter out no alphabetical characters
 
